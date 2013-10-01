@@ -1,0 +1,27 @@
+#!/bin/bash
+set -x
+
+[ -f lib/mobicents/mediaserver-utils.sh ] && . lib/mobicents/mediaserver-utils.sh
+
+# this service is now a mediaserver
+# this hook should install/config/run mediaserver
+
+#/opt/mediaserver/bootstrap/target/mms-server-3.0.1-SNAPSHOT
+# sh bin/run.sh &
+
+#install_mediaserver() {
+#  install /etc/init/mediaserver.conf
+#}
+#install_mediaserver
+
+#configure_mediaserver() {
+#  mediaserver_port=`config-get mediaserver_port`
+#}
+#configure_mediaserver
+
+#service mediaserver restart
+
+#open-port ${mediaserver_port}/TCP
+
+## tell the other side
+#`relation-set port=$mediaserver_port`

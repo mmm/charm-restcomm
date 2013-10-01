@@ -1,0 +1,22 @@
+#!/bin/bash
+set -x
+
+[ -f lib/mobicents/restcomm-utils.sh ] && . lib/mobicents/restcomm-utils.sh
+
+# this side of the relation makes the service act as a restcomm service
+
+# this hook should install restcomm
+
+# /opt/restcomm/restcomm.core/target/restcomm  /var/lib/tomcat6/webapps
+# service tomcat6 restart
+
+#install_upstart() {
+#  install /etc/init/restcomm.conf
+#}
+
+#install_restcomm() {
+#  install_upstart
+#  restart_service
+#}
+#install_restcomm
+

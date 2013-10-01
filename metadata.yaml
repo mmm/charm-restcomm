@@ -1,0 +1,10 @@
+name: restcomm
+maintainer: Mark Mims <mark.mims@ubuntu.com>
+summary: RestComm
+description: restcomm
+provides:
+  website:
+    interface: http
+requires:
+  database:
+    interface: mysql

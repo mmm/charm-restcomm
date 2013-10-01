@@ -1,0 +1,17 @@
+options:
+  restcomm:
+    type: string
+    default: ""
+    description: "to build or not to build"
+  restcomm_port:
+    type: string
+    default: "2426"
+    description: restcomm port
+  mediaserver:
+    type: string
+    default: ""
+    description: "to build or not to build"
+  mediaserver_port:
+    type: string
+    default: "2426"
+    description: mediaserver port

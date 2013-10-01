@@ -1,0 +1,19 @@
+#!/bin/bash
+# Here do anything needed to install the service
+# i.e. apt-get install -y foo  or  bzr branch http://myserver/mycode /srv/webroot
+
+set -x
+
+CWD=`pwd`
+
+DEFAULT_ADMIN_USERNAME="admin"
+DEFAULT_ADMIN_PASSWORD="admin"
+
+apt-get install -y tomcat6 tomcat6-admin tomcat6-docs tomcat6-examples python-cheetah
+
+apt-get install -y openjdk-6-jdk maven
+
+mv /etc/tomcat6/tomcat-users.xml /etc/tomcat6/tomcat-users.xml.orig
+sed -e s#__admin_username__#$DEFAULT_ADMIN_USERNAME# -e s#__admin_password__#$DEFAULT_ADMIN_PASSWORD# ${CWD}/../templates/tomcat-users.tmpl > /etc/tomcat6/tomcat-users.xml
+service tomcat6 status && service tomcat6 restart || service tomcat6 start
+

@@ -1,0 +1,21 @@
+#!/bin/bash
+set -x
+
+[ -f lib/mobicents/restcomm-utils.sh ] && . lib/mobicents/restcomm-utils.sh
+
+# this side of the relation makes the service act as a restcomm service
+
+# this hook should install/config/run restcomm
+
+# gets mediaserver host/port from remote end
+#mediaserver_port=`relation-get port`
+
+#configure_restcomm() {
+#  # write mediaserver_port to config file conf/restcomm.xml
+#}
+#configure_restcomm
+
+#service restcomm restart
+
+#open-port 8080/TCP
+
