@@ -28,8 +28,8 @@ PIDFILE=\$MEDIASERVER_RUN/mediaserver.pid
 MEDIASERVER_LOG=/var/log/mediaserver/mediaserver.log
 
 # arguments to pass to mediaserver.
-# --javahome=$JAVA_HOME
+# --javahome=\$JAVA_HOME
 # these were from jenkins
-#MEDIASERVER_ARGS="--webroot=$MEDIASERVER_RUN/war --httpPort=$HTTP_PORT --ajp13Port=$AJP_PORT --preferredClassLoader=java.net.URLClassLoader"
+#MEDIASERVER_ARGS="--webroot=\$MEDIASERVER_RUN/war --httpPort=\$HTTP_PORT --ajp13Port=\$AJP_PORT --preferredClassLoader=java.net.URLClassLoader"
 MEDIASERVER_ARGS=$mediaserver_args
 
