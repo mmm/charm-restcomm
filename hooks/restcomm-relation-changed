@@ -5,17 +5,15 @@ set -x
 
 # this side of the relation makes the service act as a restcomm service
 
-# this hook should install/config/run restcomm
-
 # gets mediaserver host/port from remote end
-#mediaserver_port=`relation-get port`
+mediaserver_port=`relation-get port`
+[ -n "$mediaserver_port" ] || exit 0
 
-#configure_restcomm() {
-#  # write mediaserver_port to config file conf/restcomm.xml
-#}
-#configure_restcomm
-
-#service restcomm restart
-
-#open-port 8080/TCP
+# this hook should config/run restcomm
+update_restcomm_config() {
+  configure_restcomm
+  # write mediaserver_port to config file conf/restcomm.xml
+  restart_restcomm
+}
+update_restcomm_config
 

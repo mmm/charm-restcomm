@@ -5,6 +5,10 @@ description: restcomm
 provides:
   website:
     interface: http
+  mediaserver:
+    interface: http
 requires:
+  restcomm:
+    interface: http
   database:
     interface: mysql

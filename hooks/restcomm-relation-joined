@@ -6,17 +6,10 @@ set -x
 # this side of the relation makes the service act as a restcomm service
 
 # this hook should install restcomm
-
-# /opt/restcomm/restcomm.core/target/restcomm  /var/lib/tomcat6/webapps
-# service tomcat6 restart
-
-#install_upstart() {
-#  install /etc/init/restcomm.conf
-#}
-
-#install_restcomm() {
-#  install_upstart
-#  restart_service
-#}
-#install_restcomm
-
+initial_restcomm_config() {
+  stop_restcomm
+  uninstall_restcomm
+  build_restcomm
+  install_restcomm
+}
+initial_restcomm_config

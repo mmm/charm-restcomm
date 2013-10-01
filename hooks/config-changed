@@ -1,27 +1,4 @@
 #!/bin/bash
 set -x
 
-[ -f lib/mobicents/mediaserver-utils.sh ] && . lib/mobicents/mediaserver-utils.sh
-[ -f lib/mobicents/restcomm-utils.sh ] && . lib/mobicents/restcomm-utils.sh
-
-update_mediaserver_config() {
-  stop_mediaserver
-  uninstall_mediaserver
-  build_mediaserver
-  install_mediaserver
-  configure_mediaserver
-  restart_mediaserver
-}
-[ -n "$(config-get mediaserver)" ] && update_mediaserver_config
-
-update_restcomm_config() {
-  stop_restcomm
-  uninstall_restcomm
-  build_restcomm
-  install_restcomm
-  configure_restcomm
-  restart_restcomm
-}
-[ -n "$(config-get restcomm)" ] && update_restcomm_config
-
 exit 0
