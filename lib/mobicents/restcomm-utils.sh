@@ -1,12 +1,10 @@
 
 pull_restcomm_source() {
-  rm -Rf /opt/restcomm
-  #( cd /opt && git clone https://github.com/Mobicents/RestComm.git )
   ( cd /opt && git clone https://code.google.com/p/restcomm )
 }
 
 build_restcomm() {
-  pull_restcomm_source
+  [ -d /opt/restcomm ] || pull_restcomm_source
   cd /opt/restcomm
   sed -i '/restcomm.docs/d' pom.xml
 	export JAVA_HOME=$(readlink -f /usr/bin/javac | sed "s:/bin/javac::")
@@ -19,17 +17,14 @@ build_restcomm() {
 }
 
 install_restcomm() {
-  # /opt/restcomm/restcomm.core/target/restcomm  /var/lib/tomcat6/webapps
-  # service tomcat6 restart
-  # install /etc/init/restcomm.conf
-  # install_upstart
-  # restart_service
-  cp -R /opt/restcomm/restcomm.core/target/restcomm  /var/lib/tomcat6/webapps
+  local build_dir=/opt/restcomm/restcomm.core/target/restcomm
+  [ -d "$build_dir" ] && cp -R $build_dir /var/lib/tomcat6/webapps/
 }
 
 configure_restcomm() {
 
   # write mediaserver_port to config file conf/restcomm.xml
+  # called from relation-changed
 
   open-port 8080/TCP
 }
@@ -43,6 +38,7 @@ stop_restcomm() {
 }
 
 uninstall_restcomm() {
-  echo "move on... nothing to see here"
+  rm -Rf /var/lib/tomcat6/webapps/restcomm
+  rm -Rf /opt/restcomm
 }
 
