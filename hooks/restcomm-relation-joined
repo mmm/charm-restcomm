@@ -1,15 +1,8 @@
 #!/bin/bash
 set -x
 
-[ -f lib/mobicents/restcomm-utils.sh ] && . lib/mobicents/restcomm-utils.sh
+# this service is a restcomm service
 
-# this side of the relation makes the service act as a restcomm service
+# restcomm should be already built
+[ -f lib/mobicents/restcomm-utils.sh ] && . lib/mobicents/restcomm-utils.sh && install_restcomm
 
-# this hook should install restcomm
-initial_restcomm_config() {
-  stop_restcomm
-  uninstall_restcomm
-  build_restcomm
-  install_restcomm
-}
-initial_restcomm_config

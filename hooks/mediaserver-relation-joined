@@ -4,19 +4,21 @@ set -x
 [ -f lib/mobicents/mediaserver-utils.sh ] && . lib/mobicents/mediaserver-utils.sh
 
 # this service is now a mediaserver
+
+bind_address=`unit-get private-address`
+
+# mediaserver should already be built
 # this hook should install/config/run mediaserver
 update_mediaserver_config() {
-  stop_mediaserver
-  uninstall_mediaserver
-  build_mediaserver
   install_mediaserver
-  configure_mediaserver
+  configure_mediaserver $bind_address
   restart_mediaserver
 }
 update_mediaserver_config
 
 # tell the other side
 mediaserver_port="2427"
+#TODO externalize port
 `relation-set port=$mediaserver_port`
 
 exit 0

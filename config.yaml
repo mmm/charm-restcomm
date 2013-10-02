@@ -1,7 +1,7 @@
 options:
   restcomm:
     type: string
-    default: ""
+    default: "unhuh"
     description: "to build or not to build"
   restcomm_port:
     type: string
@@ -9,7 +9,7 @@ options:
     description: restcomm port
   mediaserver:
     type: string
-    default: ""
+    default: "unhuh"
     description: "to build or not to build"
   mediaserver_port:
     type: string

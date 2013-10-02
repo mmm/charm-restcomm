@@ -1,6 +1,7 @@
 
 pull_restcomm_source() {
   ( cd /opt && git clone https://code.google.com/p/restcomm )
+  #TODO find release tags?
 }
 
 build_restcomm() {
@@ -19,12 +20,27 @@ build_restcomm() {
 install_restcomm() {
   local build_dir=/opt/restcomm/restcomm.core/target/restcomm
   [ -d "$build_dir" ] && cp -R $build_dir /var/lib/tomcat6/webapps/
+  #TODO clean up version dep
+
+  # frickin pos...
+  [ -f /usr/share/java/log4j-1.2.jar ] && cp /usr/share/java/log4j-1.2.jar /var/lib/tomcat6/webapps/restcomm/WEB-INF/lib/
+  #TODO clean up version dep
 }
 
 configure_restcomm() {
+  local mediaserver_port=$1
 
-  # write mediaserver_port to config file conf/restcomm.xml
-  # called from relation-changed
+  # config file is installed into /var/lib/tomcat6/webapps/restcomm/conf/restcomm.xml
+  #TODO clean up version dep
+  [ -n "$mediaserver_port" ] && sed -i "s/127.0.0.1/$mediaserver_port/" /var/lib/tomcat6/webapps/restcomm/WEB-INF/conf/restcomm.xml
+
+  # config file is installed into /var/lib/tomcat6/webapps/restcomm/conf/restcomm.xml
+  # I'll try to add an overriding entry as a separate file /var/lib/..../restcomm/conf/restcomm-mediaserver.xml
+  #ch_template_file 0644 \
+                   #root:root \
+                   #templates/restcomm-mediaserver.xml \
+                   #/var/lib/tomcat6/webapps/restcomm/conf/restcomm-mediaserver.xml \
+                   #"mediaserver_host mediaserver_port"
 
   open-port 8080/TCP
 }
@@ -39,6 +55,7 @@ stop_restcomm() {
 
 uninstall_restcomm() {
   rm -Rf /var/lib/tomcat6/webapps/restcomm
+  #TODO clean up version dep
   rm -Rf /opt/restcomm
 }
 

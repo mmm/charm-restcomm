@@ -10,10 +10,13 @@ DEFAULT_ADMIN_USERNAME="admin"
 DEFAULT_ADMIN_PASSWORD="admin"
 
 apt-get install -y tomcat6 tomcat6-admin tomcat6-docs tomcat6-examples python-cheetah
+#TODO clean up version dep
 
 apt-get install -y openjdk-6-jdk maven
+#TODO clean up version dep
 
 mv /etc/tomcat6/tomcat-users.xml /etc/tomcat6/tomcat-users.xml.orig
-sed -e s#__admin_username__#$DEFAULT_ADMIN_USERNAME# -e s#__admin_password__#$DEFAULT_ADMIN_PASSWORD# ${CWD}/../templates/tomcat-users.tmpl > /etc/tomcat6/tomcat-users.xml
+#TODO clean up version dep
+sed -e s#__admin_username__#$DEFAULT_ADMIN_USERNAME# -e s#__admin_password__#$DEFAULT_ADMIN_PASSWORD# ${CHARM_DIR}/templates/tomcat-users.tmpl > /etc/tomcat6/tomcat-users.xml
 service tomcat6 status && service tomcat6 restart || service tomcat6 start
 

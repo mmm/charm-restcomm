@@ -33,11 +33,17 @@ install_mediaserver() {
   local build_dir="/opt/mediaserver/bootstrap/target/"
   #local jar_file=$(find $build_dir -name "*SNAPSHOT.jar")
   local jar_file=/opt/mediaserver/bootstrap/target/mms-server-3.0.1-SNAPSHOT
+  #TODO clean up version dep
   install_mediaserver_upstart "/opt/mediaserver" $jar_file
 }
 
 configure_mediaserver() {
+  local bind_address=$1
+
   # mediaserver_port=`config-get mediaserver_port`
+  #TODO clean up version dep
+  sed -i "s/127.0.0.1/$bind_address/" /opt/mediaserver/bootstrap/target/mms-server-3.0.1-SNAPSHOT/deploy/server-beans.xml
+
   # open-port ${mediaserver_port}/TCP
   open-port 2427/TCP
 }

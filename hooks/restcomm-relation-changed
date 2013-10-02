@@ -11,8 +11,10 @@ mediaserver_port=`relation-get port`
 
 # this hook should config/run restcomm
 update_restcomm_config() {
-  configure_restcomm
+  configure_restcomm $mediaserver_port
+
   # write mediaserver_port to config file conf/restcomm.xml
+
   restart_restcomm
 }
 update_restcomm_config
