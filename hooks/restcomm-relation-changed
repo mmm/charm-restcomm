@@ -9,9 +9,11 @@ set -x
 mediaserver_port=`relation-get port`
 [ -n "$mediaserver_port" ] || exit 0
 
+mediaserver_host=`relation-get private-address`
+
 # this hook should config/run restcomm
 update_restcomm_config() {
-  configure_restcomm $mediaserver_port
+  configure_restcomm $mediaserver_host $mediaserver_port
 
   # write mediaserver_port to config file conf/restcomm.xml
 

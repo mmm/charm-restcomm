@@ -28,11 +28,13 @@ install_restcomm() {
 }
 
 configure_restcomm() {
-  local mediaserver_port=$1
+  local mediaserver_host=$1
+  local mediaserver_port=$2
 
   # config file is installed into /var/lib/tomcat6/webapps/restcomm/conf/restcomm.xml
-  #TODO clean up version dep
-  [ -n "$mediaserver_port" ] && sed -i "s/127.0.0.1/$mediaserver_port/" /var/lib/tomcat6/webapps/restcomm/WEB-INF/conf/restcomm.xml
+  #TODO clean up tomcat version dep
+  [ -n "$mediaserver_host" ] && sed -i "s/127.0.0.1/$mediaserver_host/" /var/lib/tomcat6/webapps/restcomm/WEB-INF/conf/restcomm.xml
+  [ -n "$mediaserver_port" ] && sed -i "s/2427/$mediaserver_port/" /var/lib/tomcat6/webapps/restcomm/WEB-INF/conf/restcomm.xml
 
   # config file is installed into /var/lib/tomcat6/webapps/restcomm/conf/restcomm.xml
   # I'll try to add an overriding entry as a separate file /var/lib/..../restcomm/conf/restcomm-mediaserver.xml
