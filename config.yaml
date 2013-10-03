@@ -2,8 +2,16 @@ options:
   restcomm:
     type: string
     default: ""
+    description: "install restcomm"
+  build_restcomm:
+    type: string
+    default: ""
     description: "to build or not to build"
   mediaserver:
+    type: string
+    default: ""
+    description: "install_mediaserver"
+  build_mediaserver:
     type: string
     default: ""
     description: "to build or not to build"

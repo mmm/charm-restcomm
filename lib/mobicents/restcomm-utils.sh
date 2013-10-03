@@ -13,13 +13,27 @@ build_restcomm() {
   mvn -DskipTests=true -Dmaven.javadoc.skip=true --batch-mode clean install
   cd /opt/restcomm/restcomm.core
   mvn -DskipTests=true -Dmaven.javadoc.skip=true --batch-mode clean install
+  ln -s /opt/restcomm/restcomm.core/target /opt/restcomm/webapps
   cd $CHARM_DIR
   #( cd /opt/restcomm/restcomm.core && export JAVA_HOME=/usr/lib/jvm/java-6-openjdk-amd64/ && mvn clean install )
 }
 
+download_restcomm() {
+
+  cd /opt
+  wget -q https://mobicents.ci.cloudbees.com/job/RestComm/lastSuccessfulBuild/artifact/restcomm-saas-tomcat-1.0.0.CR2-SNAPSHOT.zip
+  unzip restcomm-saas-tomcat-1.0.0.CR2-SNAPSHOT.zip
+  mv restcomm-saas-tomcat-1.0.0.CR2-SNAPSHOT restcomm
+  # or
+  #wget -q http://sourceforge.net/projects/mobicents/files/RestComm/restcomm-saas-tomcat-1.0.0.FINAL.zip
+  #unzip restcomm-saas-tomcat-1.0.0.FINAL.zip
+  #mv restcomm-saas-tomcat-1.0.0.CR1 restcomm
+
+}
+
 install_restcomm() {
-  local build_dir=/opt/restcomm/restcomm.core/target/restcomm
-  [ -d "$build_dir" ] && cp -R $build_dir /var/lib/tomcat6/webapps/
+  local webapps_dir=/opt/restcomm/webapps/restcomm
+  [ -d "$webapps_dir" ] && cp -R $webapps_dir /var/lib/tomcat6/webapps/
   #TODO clean up version dep
 
   # frickin pos...

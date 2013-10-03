@@ -7,16 +7,16 @@ set -x
 initial_mediaserver_config() {
   stop_mediaserver
   uninstall_mediaserver
-  build_mediaserver
+  [ -n "$(config-get build_mediaserver)" ] && build_mediaserver || download_mediaserver
 }
-[ -n $(config-get mediaserver) ] && initial_mediaserver_config
+[ -n "$(config-get mediaserver)" ] && initial_mediaserver_config
 
 initial_restcomm_config() {
   stop_restcomm
   uninstall_restcomm
-  build_restcomm
+  [ -n "$(config-get build_restcomm)" ] && build_restcomm || download_restcomm
 }
-[ -n $(config-get restcomm) ] && initial_restcomm_config
+[ -n "$(config-get restcomm)" ] && initial_restcomm_config
 
 exit 0
 

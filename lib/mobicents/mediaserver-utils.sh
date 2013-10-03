@@ -10,7 +10,19 @@ build_mediaserver() {
 	export JAVA_HOME=$(readlink -f /usr/bin/javac | sed "s:/bin/javac::")
 	export PATH=$PATH:$JAVA_HOME/bin
   mvn -DskipTests=true -Dmaven.javadoc.skip=true --batch-mode clean install
+  ln -s /opt/mediaserver/bootstrap/target/mms-server-3.0.1-SNAPSHOT /opt/mediaserver/mobicents-media-server
   cd $CHARM_DIR
+}
+
+download_mediaserver() {
+  cd /opt
+  wget -q https://mobicents.ci.cloudbees.com/job/RestComm/lastSuccessfulBuild/artifact/restcomm-saas-tomcat-1.0.0.CR2-SNAPSHOT.zip
+  unzip restcomm-saas-tomcat-1.0.0.CR2-SNAPSHOT.zip
+  mv restcomm-saas-tomcat-1.0.0.CR2-SNAPSHOT mediaserver
+  # or
+  #wget -q http://sourceforge.net/projects/mobicents/files/RestComm/restcomm-saas-tomcat-1.0.0.FINAL.zip
+  #unzip restcomm-saas-tomcat-1.0.0.FINAL.zip
+  #mv restcomm-saas-tomcat-1.0.0.CR1 restcomm
 }
 
 install_mediaserver_upstart() {
@@ -30,9 +42,7 @@ install_mediaserver() {
   # /opt/mediaserver/bootstrap/target/mms-server-3.0.1-SNAPSHOT
   # sh bin/run.sh &
   # install /etc/init/mediaserver.conf
-  local build_dir="/opt/mediaserver/bootstrap/target/"
-  #local jar_file=$(find $build_dir -name "*SNAPSHOT.jar")
-  local jar_file=/opt/mediaserver/bootstrap/target/mms-server-3.0.1-SNAPSHOT
+  local jar_file=/opt/mediaserver/mobicents-media-server
   #TODO clean up version dep
   install_mediaserver_upstart "/opt/mediaserver" $jar_file
 }
@@ -42,7 +52,7 @@ configure_mediaserver() {
 
   # mediaserver_port=`config-get mediaserver_port`
   #TODO clean up version dep
-  sed -i "s/127.0.0.1/$bind_address/" /opt/mediaserver/bootstrap/target/mms-server-3.0.1-SNAPSHOT/deploy/server-beans.xml
+  sed -i "s/127.0.0.1/$bind_address/" /opt/mediaserver/mobicents-media-server/deploy/server-beans.xml
 
   # open-port ${mediaserver_port}/TCP
   open-port 2427/TCP
