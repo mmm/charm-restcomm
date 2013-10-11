@@ -11,7 +11,11 @@ bind_address=`unit-get private-address`
 # this hook should install/config/run mediaserver
 update_mediaserver_config() {
   install_mediaserver
-  configure_mediaserver $bind_address
+
+  if [ -n "$bind_address" ]; then
+    configure_mediaserver `dig +short $bind_address`
+  fi
+
   restart_mediaserver
 }
 update_mediaserver_config
