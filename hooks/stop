@@ -6,4 +6,3 @@
 # balancer to stop sending traffic.
 # rm /srv/webroot/server-live.txt && sleep 30
 
-service tomcat6 stop

@@ -16,9 +16,6 @@ MEDIASERVER_USER=ubuntu
 # location of mediaserver arch indep files
 MEDIASERVER_ROOT=$mediaserver_root
 
-# location of the mediaserver jar file
-MEDIASERVER_JAR=\$MEDIASERVER_ROOT/mediaserver.jar
-
 # mediaserver /run location
 MEDIASERVER_RUN=/var/run/mediaserver
 
