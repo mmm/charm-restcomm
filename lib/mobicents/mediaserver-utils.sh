@@ -82,9 +82,10 @@ configure_mediaserver() {
   #MMS_OPTS='$JAVA_OPTS -Xms64m -Xmx128m -Dsun.rmi.dgc.client.gcInterval=3600000 -Dsun.rmi.dgc.server.gcInterval=3600000'
 
   open-port 2427/TCP
-  for port in {64534..65534}; do
-    open-port $port/UDP
-  done
+  #for port in {64534..65534}; do
+  #  open-port $port/UDP
+  #done
+  #TODO ec2 very unhappy with 1000 rules for one group... manually adding a single rule for this range for now.
 }
 
 restart_mediaserver() {

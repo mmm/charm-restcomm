@@ -1,4 +1,6 @@
 
+[ -f lib/ch-file.sh ] && . lib/ch-file.sh
+
 pull_restcomm_source() {
   ( cd /opt && git clone https://code.google.com/p/restcomm )
   #TODO find release tags?
@@ -81,6 +83,13 @@ configure_restcomm() {
 
   open-port 8080/TCP
   open-port 5080/TCP
+  open-port 5080/UDP
+
+  #for port in {64535..65535}; do
+  #  open-port $port/UDP
+  #done
+  #TODO ec2 very unhappy with 1000 rules for one group... manually adding a single rule for this range for now.
+
 }
 
 clone_app() {
