@@ -60,7 +60,7 @@ install_restcomm() {
 configure_restcomm() {
   local mediaserver_address=$1
 
-  local RESTCOMM_ROOT=/opt/restcomm
+  local RESTCOMM_ROOT=/opt/restcomm/webapps/restcomm
 	local FILE=$RESTCOMM_ROOT/WEB-INF/conf/restcomm.xml
 
 	sed -e "s|<local-address>$IP_ADDRESS_PATTERN<\/local-address>|<local-address>$mediaserver_address<\/local-address>|" \
