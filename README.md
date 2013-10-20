@@ -9,6 +9,8 @@
 
 # TODO
 
+- config's not getting written correctly to bind to external address...
+
 - rewrite these with helpers
 
 - use templates across the board instead of sed
