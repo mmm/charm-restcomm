@@ -46,40 +46,51 @@ install_restcomm_upstart() {
 }
 
 install_restcomm() {
-  #local webapps_dir=/opt/restcomm/webapps/restcomm
+  local webapps_dir=/opt/restcomm/webapps/restcomm
   #[ -d "$webapps_dir" ] && cp -R $webapps_dir /var/lib/tomcat6/webapps/
   #TODO clean up version dep
 
-  #[ -f /usr/share/java/log4j-1.2.jar ] && cp /usr/share/java/log4j-1.2.jar /var/lib/tomcat6/webapps/restcomm/WEB-INF/lib/
+  [ -f /usr/share/java/log4j-1.2.jar ] && cp /usr/share/java/log4j-1.2.jar $webapps_dir/WEB-INF/lib/
   #TODO clean up version dep
 
   install_restcomm_upstart "/opt/restcomm"
 
 }
 
+bind_to_external_ip() {
+  local CONFIG_FILE=/opt/restcomm/conf/server.xml
+
+  local restcomm_host=`unit-get public-address`
+  local restcomm_address=`dig +short $restcomm_host`
+
+	sed -i $CONFIG_FILE -e "s|127.0.0.1|$restcomm_address|" 
+
+}
+
 configure_restcomm() {
   local mediaserver_address=$1
 
-  local RESTCOMM_ROOT=/opt/restcomm/webapps/restcomm
-	local FILE=$RESTCOMM_ROOT/WEB-INF/conf/restcomm.xml
+  local restcomm_root=/opt/restcomm/webapps/restcomm
+	local config=$restcomm_root/WEB-INF/conf/restcomm.xml
 
-	sed -e "s|<local-address>$IP_ADDRESS_PATTERN<\/local-address>|<local-address>$mediaserver_address<\/local-address>|" \
-	    -e "s|<remote-address>$IP_ADDRESS_PATTERN<\/remote-address>|<remote-address>$mediaserver_address<\/remote-address>|" \
-	    -i $FILE
+	sed -i $config -e "s/<local-address>127.0.0.1<\/local-address>/<local-address>$mediaserver_address<\/local-address>/"
+	sed -i $config -e "s/<remote-address>127.0.0.1<\/remote-address>/<remote-address>$mediaserver_address<\/remote-address>/"
 
   local private_host=`unit-get private-address`
   local private_address=`dig +short $private_host`
   local public_host=`unit-get public-address`
   local public_address=`dig +short $public_host`
-	sed -e "s|<\!--.*<external-ip>.*<\/external-ip>.*-->|<external-ip>$public_address<\/external-ip>|" \
-	    -e "s|<external-ip>.*<\/external-ip>|<external-ip>$public_address<\/external-ip>|" \
-	    -e "s|<external-address>.*<\/external-address>|<external-address>$public_address<\/external-address>|" \
-	    -e "s|<\!--.*<external-address>.*<\/external-address>.*-->|<external-address>$public_address<\/external-address>|" \
-	    -e "s|<prompts-uri>.*<\/prompts-uri>|<prompts-uri>http:\/\/$public_address:8080\/restcomm\/audio<\/prompts-uri>|" \
-	    -e "s|<cache-uri>.*<\/cache-uri>|<cache-uri>http:\/\/$private_address:8080\/restcomm\/cache<\/cache-uri>|" \
-	    -e "s|<recordings-uri>.*<\/recordings-uri>|<recordings-uri>http:\/\/$public_address:8080\/restcomm\/recordings<\/recordings-uri>|" \
-	    -e "s|<error-dictionary-uri>.*<\/error-dictionary-uri>|<error-dictionary-uri>http:\/\/$public_address:8080\/restcomm\/errors<\/error-dictionary-uri>|" \
-	    -e 's|<outbound-prefix>.*</outbound-prefix>|<outbound-prefix>#</outbound-prefix>|' -i $FILE
+	sed -i $config -e "s/<\!--.*<external-ip>.*<\/external-ip>.*-->/<external-ip>$public_address<\/external-ip>/"
+	sed -i $config -e "s/<external-ip>.*<\/external-ip>/<external-ip>$public_address<\/external-ip>/"
+	sed -i $config -e "s/<external-address>.*<\/external-address>/<external-address>$public_address<\/external-address>/"
+	sed -i $config -e "s/<\!--.*<external-address>.*<\/external-address>.*-->/<external-address>$public_address<\/external-address>/"
+	sed -i $config -e "s/<prompts-uri>.*<\/prompts-uri>/<prompts-uri>http:\/\/$public_address:8080\/restcomm\/audio<\/prompts-uri>/"
+	sed -i $config -e "s/<cache-uri>.*<\/cache-uri>/<cache-uri>http:\/\/$private_address:8080\/restcomm\/cache<\/cache-uri>/"
+	sed -i $config -e "s/<recordings-uri>.*<\/recordings-uri>/<recordings-uri>http:\/\/$public_address:8080\/restcomm\/recordings<\/recordings-uri>/"
+	sed -i $config -e "s/<error-dictionary-uri>.*<\/error-dictionary-uri>/<error-dictionary-uri>http:\/\/$public_address:8080\/restcomm\/errors<\/error-dictionary-uri>/"
+	sed -i $config -e "s/<outbound-prefix>.*</outbound-prefix>/<outbound-prefix>#</outbound-prefix>/"
+
+  bind_to_external_ip
 
   open-port 8080/TCP
   open-port 5080/TCP

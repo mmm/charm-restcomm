@@ -58,27 +58,22 @@ configure_mediaserver() {
   local bind_address=$1
   local bind_network=$2
   local bind_subnet=$3
-  local CONFIG_FILE=/opt/mediaserver/mobicents-media-server/deploy/server-beans.xml
-  local IP_ADDRESS_PATTERN="[0-9]\{1,3\}.[0-9]\{1,3\}.[0-9]\{1,3\}.[0-9]\{1,3\}"
+  local config=/opt/mediaserver/mobicents-media-server/deploy/server-beans.xml
 
-	sed -e "s|<property name=\"bindAddress\">$IP_ADDRESS_PATTERN<\/property>|<property name=\"bindAddress\">$bind_address<\/property>|" \
-	    -e "s|<property name=\"localBindAddress\">$IP_ADDRESS_PATTERN<\/property>|<property name=\"localBindAddress\">$bind_address<\/property>|" \
-	    -e "s|<property name=\"localNetwork\">$IP_ADDRESS_PATTERN<\/property>|<property name=\"localNetwork\">$bind_network<\/property>|" \
-	    -e "s|<property name=\"localSubnet\">$IP_ADDRESS_PATTERN<\/property>|<property name=\"localSubnet\">$bind_subnet<\/property>|" \
-	    -e 's|<property name="useSbc">.*</property>|<property name="useSbc">true</property>|' \
-	    -e 's|<property name="dtmfDetectorDbi">.*</property>|<property name="dtmfDetectorDbi">36</property>|' \
-	    -e 's|<response-timeout>.*</response-timeout>|<response-timeout>5000</response-timeout>|' \
-	    -e 's|<property name="lowestPort">.*</property>|<property name="lowestPort">64534</property>|' \
-	    -e 's|<property name="highestPort">.*</property>|<property name="highestPort">65535</property>|' \
-	    -i $CONFIG_FILE
+	sed -i $config -e "s/<property name=\"bindAddress\">127.0.0.1<\/property>/<property name=\"bindAddress\">$bind_address<\/property>/"
+	sed -i $config -e "s/<property name=\"localBindAddress\">127.0.0.1<\/property>/<property name=\"localBindAddress\">$bind_address<\/property>/"
+	sed -i $config -e "s/<property name=\"localNetwork\">127.0.0.1<\/property>/<property name=\"localNetwork\">$bind_network<\/property>/"
+	sed -i $config -e "s/<property name=\"localSubnet\">127.0.0.1<\/property>/<property name=\"localSubnet\">$bind_subnet<\/property>/"
+
+	sed -i $config -e "s/<property name=\"lowestPort\">.*</property>/<property name=\"lowestPort\">64534</property>/"
+	sed -i $config -e "s/<property name=\"highestPort\">.*</property>/<property name=\"highestPort\">65535</property>/"
 	    
-	grep -q -e '<property name="lowestPort">.*</property>' $FILE.bak || sed -i '/rtpTimeout/ a\
-    <property name="lowestPort">64534</property>' $CONFIG_FILE
-    
-  grep -q -e '<property name="highestPort">.*</property>' $FILE.bak || sed -i '/rtpTimeout/ a\
-    <property name="highestPort">65535</property>' $CONFIG_FILE
+  # dunno wtf tehse are
+	sed -i $config -e "s/<property name=\"useSbc\">.*</property>/<property name=\"useSbc\">true</property>/"
+	sed -i $config -e "s/<property name=\"dtmfDetectorDbi\">.*</property>/<property name=\"dtmfDetectorDbi\">36</property>/"
+	sed -i $config -e "s/<response-timeout>.*</response-timeout>/<response-timeout>5000</response-timeout>/"
 
-  #TODO
+  #TODO ?
   #MMS_OPTS='$JAVA_OPTS -Xms64m -Xmx128m -Dsun.rmi.dgc.client.gcInterval=3600000 -Dsun.rmi.dgc.server.gcInterval=3600000'
 
   open-port 2427/TCP
